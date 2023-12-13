@@ -1,38 +1,59 @@
 {% include 'include/head.html' %}
 
-
-   <body>
-<div class="container">
-    {% for post in posts %}
-    <div class="card mt-4 col-md-4"> <!-- Added col-md-4 class here -->
-        <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
-        <div class="card-body">
-            <h2 class="card-title">{{ post.description }}</h2>
-            <p class="card-text">{{ post.user }}</p>
-            <p class="card-text">{{ post.created_at }}</p>
-             <form method="post">
-        {% csrf_token %}
-        <input type="hidden" name="post_id" value="{{ post.id }}">
-              <p>{{ post.likes.count }}</p>
-        <button class="btn" type="submit">
-            
-        
-          {% if request.user in post.likes.all %}
-           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
-  <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
-</svg>
-          {% else %}
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
-</svg>
-          {% endif %}
-        
-        </button>
-            
-      </form>
-        </div>
+<body>
+    <div class="container">
+        {% for post in posts %}
+        <div class="card mt-4 col-md-4  mx-auto text-center">
+          {% if post.user.avatar %}
+    <div style="display: flex; align-items: center;">
+        <img src="{{post.user.avatar.url }}" class="img-fluid rounded-circle" style="width: 30px; height:30px; margin-right: 10px;">
+        <a href="{% url 'user_profile' post.user.username %}">
+            <p>{{ post.user }}</p></a>
     </div>
-    {% endfor %}
-</div>
-   </body>
-     </html>
+{% else %}
+    <div style="display: flex; align-items: center;">
+        <img src="https://sun9-59.userapi.com/impg/fzJxLh7QKJsfQ51hTqrXMlW1kiAxeiewD_Sm7A/rSSRVN01Rd8.jpg?size=532x532&quality=96&sign=5f36d68511cd7f2a6076f964e44c597b&type=album" class="img-fluid rounded-circle" style="width: 30px; height:30px; margin-right: 10px;">
+        <a href="{% url 'user_profile' post.user.username %}">
+            <p>{{ post.user }}</p></a>
+    </div>
+{% endif %}
+
+            <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
+            <div class="card-body">
+                <h2 class="card-title">{{ post.description }}</h2>
+
+
+                <p class="card-text">{{ post.created_at }}</p>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="post_id" value="{{ post.id }}">
+                    <button class="btn" type="submit">
+                        <span style="display: flex; align-items: center;">
+                            {% if request.user in post.likes.all %}
+                                <span class="like-container">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-heart-fill" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                                    </svg>
+                                </span>
+                            {% else %}
+                                <span class="like-container">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-heart" viewBox="0 0 16 16">
+                                        <path
+                                            d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.920 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
+                                    </svg>
+                                </span>
+                            {% endif %}
+                            <p class="ml-2 mb-0">{{ post.likes.count }}</p>
+                        </span>
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

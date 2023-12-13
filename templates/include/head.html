@@ -18,9 +18,9 @@
     </style>
 
         </head>
-     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
                 <div class="container px-4 px-lg-5">
-                    <a >SocialNetwork</a>
+                    <a href="{% url 'home' %}"  style="color: azure" >SocialNetwork</a>
 
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -31,8 +31,9 @@
                             <li class="nav-item">
                                 {% if user.is_authenticated %}
 
-                                <li class="nav-item nav-link">{{ user.username }}</li>
+                                <li class="nav-item "><a href="{% url 'profile' %}" class="nav-link">{{ user.username }}</a></li>
 
+                               <li class="nav-item"><a class="nav-link"  href="{% url 'post-add' %}">Добавить запись</a></li>
                                 <li class="nav-item"><a class="nav-link"  href="{% url 'logout' %}">Выход</a></li>
 
 

@@ -1,0 +1,68 @@
+{% include 'include/head.html' %}
+
+<body>
+  <script>
+    function toggleForm() {
+      let formDiv = document.getElementById('avatar-upload-form');
+      formDiv.style.display = (formDiv.style.display === 'none' || formDiv.style.display === '') ? 'block' : 'none';
+    }
+  </script>
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-4">
+        {% if user.avatar %}
+          <img src="{{ user.avatar.url }}" alt="{{ user.username }} Avatar" class="img-fluid rounded-circle" style="width: 300px; height: 320px;" id="avatar-image" onclick="toggleForm()">
+            <h1>{{ user.username }}</h1>
+<p>{{ user.bio }}</p>
+        {% else %}
+          <img src="https://sun9-59.userapi.com/impg/fzJxLh7QKJsfQ51hTqrXMlW1kiAxeiewD_Sm7A/rSSRVN01Rd8.jpg?size=532x532&quality=96&sign=5f36d68511cd7f2a6076f964e44c597b&type=album" class="img-fluid rounded-circle" style="width: 300px; height:300px;" id="avatar-image" onclick="toggleForm()">
+        <h1>{{ user.username }}</h1>
+<p>{{ user.bio }}</p>
+        {% endif %}
+
+        <div id="avatar-upload-form" style="display: none;">
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-secondary"submit">Загрузить</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="col-md-8">
+        
+        <h2>Публикации:</h2>
+        {% for post in posts %}
+          <div class="card mb-3" style="width: max-content">
+            <img style="width: max-content; height: 300px;" src="{{ post.image.url }}" class="card-img-top" alt="{{ post.user.username }}'s Post Image">
+            <div class="card-body">
+              <p class="card-text">{{ post.description }}</p>
+              <p class="card-text"><small class="text-muted">{{ post.created_at }}</small></p>
+
+              <div class="mb-2">
+                <strong><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                </svg>:</strong>
+
+                {% if post.likes.count > 0 %}
+                  {{ post.likes.count }}
+                {% endif %}
+              </div>
+
+              <div class="mb-2">
+                <strong><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-dots-fill" viewBox="0 0 16 16">
+                  <path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7M5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0m4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                </svg>:</strong>
+                {% for comment in post.comment_set.all %}
+                  <p><strong>{{ comment.user.username }}:</strong> {{ comment.text }}</p>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</body>
+</html>
