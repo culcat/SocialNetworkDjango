@@ -10,3 +10,5 @@ class SignUpForm(UserCreationForm):
         fields = ('username', 'email', 'password1', 'password2')
 
 
+class LikeForm(forms.Form):
+    post_id = forms.IntegerField(widget=forms.HiddenInput())
