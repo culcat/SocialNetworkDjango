@@ -1,0 +1,9 @@
+{% include 'include/head.html' %}
+{% block content %}
+  <h2>Регистрация</h2>
+  <form method="post" action="{% url 'register' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn" type="submit">Зарегистрироваться</button>
+  </form>
+{% endblock %}
